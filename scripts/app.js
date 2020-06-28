@@ -1,8 +1,8 @@
-const form = document.querySelector('form');
-const card = document.querySelector('.card');
-const details = document.querySelector('.details');
-const time = document.querySelector('img.time');
-const icon = document.querySelector('.icon img');
+const form = document.querySelector("form");
+const card = document.querySelector(".card");
+const details = document.querySelector(".details");
+const time = document.querySelector("img.time");
+const icon = document.querySelector(".icon img");
 
 const updateCity = async (city) => {
   const cityDets = await getCity(city);
@@ -23,19 +23,19 @@ const updateUI = (data) => {
     </div>
   `;
 
-  if (card.classList.contains('d-none')) {
-    card.classList.remove('d-none');
+  if (card.classList.contains("d-none")) {
+    card.classList.remove("d-none");
   }
 
-  const timeSrc = weather.IsDayTime ? 'img/day.svg' : 'img/night.svg';
+  const timeSrc = weather.IsDayTime ? "img/day.svg" : "img/night.svg";
 
-  time.setAttribute('src', timeSrc);
+  time.setAttribute("src", timeSrc);
 
   iconSrc = `img/icons/${weather.WeatherIcon}.svg`;
-  icon.setAttribute('src', iconSrc);
+  icon.setAttribute("src", iconSrc);
 };
 
-form.addEventListener('submit', (e) => {
+form.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const city = form.city.value.trim();
@@ -43,8 +43,18 @@ form.addEventListener('submit', (e) => {
 
   updateCity(city)
     .then((data) => {
-      console.log(data);
       updateUI(data);
     })
     .catch((err) => console.log(err));
+
+  // local storage
+  localStorage.setItem("city", city);
 });
+
+if (localStorage.getItem("city")) {
+  updateCity(localStorage.getItem("city"))
+    .then((data) => {
+      updateUI(data);
+    })
+    .catch((err) => console.log(err));
+}
